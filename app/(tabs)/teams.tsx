@@ -2,13 +2,29 @@ import Header from "@/components/Header";
 import Tabs from "@/components/Tabs/Tabs";
 import TeamCard from "@/components/TeamCard";
 import { Fonts } from "@/hooks/fonts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Image, ScrollView, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-type RegionCodes = "cn" | "am" | "emea" | "pac";
+enum Regions {
+  emea,
+  americas,
+  pacific,
+  cn,
+}
 export default function TeamsScreen() {
   const [selectedRegion, setSelectedRegion] = useState<number>(0);
+  const [teams, setTeams] = useState<any[]>([]);
+  const getRegion = async (index: number) => {
+    const res = await fetch(
+      `http://45.155.124.254:3000/region?code=${Regions[index]}`
+    );
+    const data = await res.json();
+    setTeams(data.teams);
+  };
+  useEffect(() => {
+    getRegion(selectedRegion);
+  }, [selectedRegion]);
   return (
     <SafeAreaView className="w-full p-4">
       <Header title={"TEAMS"} lastUpdate={"02 Nov 2024 23:14"} />
@@ -26,7 +42,7 @@ export default function TeamsScreen() {
       </View>
       <FlatList
         numColumns={3}
-        data={[1, 2, 3, 4, 5, 6, 7, 8]}
+        data={teams}
         className="w-full pt-4 h-full "
         columnWrapperClassName="flex flex-row justify-between items-start"
         keyExtractor={(item, index) => "listitem#" + index.toString()}
@@ -41,7 +57,7 @@ export default function TeamsScreen() {
               src="https://owcdn.net/img/65b8ccef5e273.png"
             />
             <Text className="text-white font-bold text-xs text-center">
-              {String("BBL Esports").slice(0, 13)}
+              {String(item.team).slice(0, 13)}
             </Text>
           </TeamCard>
         )}
