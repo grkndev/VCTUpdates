@@ -4,7 +4,7 @@ dist/
 npm-debug.*
 *.jks
 *.p8
-*.p12
+*.p12gi
 *.key
 *.mobileprovision
 *.orig.*
