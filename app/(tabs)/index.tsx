@@ -2,14 +2,8 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { Fonts } from "@/hooks/fonts";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  RefreshControl,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, RefreshControl } from "react-native";
+import dayjs from "dayjs";
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -22,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
   const opVal = useSharedValue(100);
   const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [updates, setUpdates] = useState<any[]>([]);
   let opStyle = {
     opacity: opVal.value / 100,
@@ -40,6 +35,7 @@ export default function HomeScreen() {
       const res = await fetch("http://45.155.124.254:3000/updates");
       const data = await res.json();
       setUpdates(data);
+      setLastUpdate(Date.now());
     } catch (error) {
       console.error("Error fetching updates:", error);
     } finally {
@@ -55,7 +51,10 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="p-4 gap-8 flex">
-      <Header title={"UPDATES"} lastUpdate={"02 Nov 2024 23:14"} />
+      <Header
+        title={"UPDATES"}
+        lastUpdate={dayjs(lastUpdate).format("D MMM YYYY HH:mm")}
+      />
       {isLoading && (
         <Animated.Text
           className="text-white "

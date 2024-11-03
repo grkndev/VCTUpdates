@@ -20,6 +20,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomBackdrop from "@/components/CustomBackdrop";
 import { useSharedValue } from "react-native-reanimated";
 import CustomBackground from "@/components/CustomBackground";
+import dayjs from "dayjs";
 enum Regions {
   emea,
   americas,
@@ -29,6 +30,7 @@ enum Regions {
 export default function TeamsScreen() {
   const [selectedRegion, setSelectedRegion] = useState<number>(0);
   const [teams, setTeams] = useState<any[]>([]);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
   const getRegion = async (index: number) => {
     const res = await fetch(
@@ -55,7 +57,10 @@ export default function TeamsScreen() {
 
   return (
     <SafeAreaView className="w-full p-4">
-      <Header title={"TEAMS"} lastUpdate={"02 Nov 2024 23:14"} />
+      <Header
+        title={"TEAMS"}
+        lastUpdate={dayjs(lastUpdate).format("D MMM YYYY HH:mm")}
+      />
       <View className="bg-[#222222] rounded-xl p-2 mt-4">
         <Tabs
           data={[
@@ -106,26 +111,27 @@ export default function TeamsScreen() {
         onChange={handleSheetChanges}
       >
         <BottomSheetView className="px-4 gap-4">
-          {selectedTeam && selectedTeam.players.map((player:any, index:number) => (
-            <TeamCard key={player.handle} className="gap-2 flex flex-col">
-              <Text
-                className="text-white"
-                style={{
-                  fontFamily: Fonts.Bold,
-                }}
-              >
-               {player.handle}
-              </Text>
-              <Text
-                className="text-zinc-500"
-                style={{
-                  fontFamily: Fonts.Semibold,
-                }}
-              >
-                 {player.firstName} {player.lastName} | {player.activeStatus}
-              </Text>
-            </TeamCard>
-          ))}
+          {selectedTeam &&
+            selectedTeam.players.map((player: any, index: number) => (
+              <TeamCard key={player.handle} className="gap-2 flex flex-col">
+                <Text
+                  className="text-white"
+                  style={{
+                    fontFamily: Fonts.Bold,
+                  }}
+                >
+                  {player.handle}
+                </Text>
+                <Text
+                  className="text-zinc-500"
+                  style={{
+                    fontFamily: Fonts.Semibold,
+                  }}
+                >
+                  {player.firstName} {player.lastName} | {player.activeStatus}
+                </Text>
+              </TeamCard>
+            ))}
         </BottomSheetView>
       </BottomSheetModal>
     </SafeAreaView>
