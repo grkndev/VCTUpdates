@@ -94,7 +94,7 @@ export default function TeamsScreen() {
           >
             <Image
               className="w-16 h-16"
-              src="https://owcdn.net/img/65b8ccef5e273.png"
+              source={require("@/assets/images/adaptive-icon.png")}
             />
             <Text className="text-white font-bold text-[.6rem] text-center">
               {String(item.team).slice(0, 13)}
