@@ -18,11 +18,13 @@ import {
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-
+import Toast, { ToastConfig } from "react-native-toast-message";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { Platform } from "react-native";
+import { Platform, Text, View } from "react-native";
+import Icon from "@/lib/icon";
+import { Fonts } from "@/hooks/fonts";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -70,7 +72,6 @@ async function registerForPushNotificationsAsync() {
           projectId,
         })
       ).data;
-      console.log(pushTokenString);
       return pushTokenString;
     } catch (e: unknown) {
       handleRegistrationError(`${e}`);
@@ -82,7 +83,33 @@ async function registerForPushNotificationsAsync() {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
+const toastconfig: ToastConfig = {
+  alert: ({ text1, text2, ...rest }) => (
+    <View className="rounded-xl overflow-hidden  p-4 items-center justify-center gap-2 bg-[#534a31] flex flex-row">
+      <View className=" bg-[#C5B174] aspect-square h-full p-4 items-center justify-center rounded-xl">
+        <Icon name="Bell" color="white" size={20} />
+      </View>
+      <View className="flex flex-col">
+        <Text
+          className="text-sm text-white"
+          style={{
+            fontFamily: Fonts.Bold,
+          }}
+        >
+          {text1}
+        </Text>
+        <Text
+          className="text-xs w-[90%] text-white"
+          style={{
+            fontFamily: Fonts.Regular,
+          }}
+        >
+          {text2}
+        </Text>
+      </View>
+    </View>
+  ),
+};
 export default function RootLayout() {
   // NOTIFICATION REGISTRATION
   const [expoPushToken, setExpoPushToken] = useState("");
@@ -93,12 +120,25 @@ export default function RootLayout() {
   const responseListener = useRef<Notifications.Subscription>();
   useEffect(() => {
     registerForPushNotificationsAsync()
-      .then((token) => setExpoPushToken(token ?? ""))
+      .then((token) =>
+        fetch("http://45.155.124.254:3000/exponot", {
+          method: "POST",
+          body: JSON.stringify({ token: token }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      )
       .catch((error: any) => setExpoPushToken(`${error}`));
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
+        Toast.show({
+          type: "alert",
+          text1: notification.request.content.title || "New Data",
+          text2: notification.request.content.body || "New Data",
+        });
       });
 
     responseListener.current =
@@ -115,7 +155,6 @@ export default function RootLayout() {
         Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-  console.log(expoPushToken);
 
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
@@ -141,10 +180,11 @@ export default function RootLayout() {
         <BottomSheetModalProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
+            {/* <Stack.Screen name="+not-found" /> */}
           </Stack>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
+      <Toast config={toastconfig} />
     </ThemeProvider>
   );
 }
