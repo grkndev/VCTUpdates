@@ -38,6 +38,7 @@ export default function TeamsScreen() {
     );
     const data = await res.json();
     setTeams(data.teams);
+    setLastUpdate(Date.now());
   };
   useEffect(() => {
     getRegion(selectedRegion);
