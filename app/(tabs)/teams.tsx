@@ -44,7 +44,7 @@ export default function TeamsScreen() {
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
-  const snapPoints = useMemo(() => ["50%", "75%", "90%"], []);
+  const snapPoints = useMemo(() => ["75%", "95%"], []);
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -84,13 +84,13 @@ export default function TeamsScreen() {
               setSelectedTeam(item);
               handlePresentModalPress();
             }}
-            className="w-32 items-center justify-center flex flex-col"
+            className="w-32 h-32 items-center justify-center flex flex-col"
           >
             <Image
               className="w-16 h-16"
               src="https://owcdn.net/img/65b8ccef5e273.png"
             />
-            <Text className="text-white font-bold text-xs text-center">
+            <Text className="text-white font-bold text-[.6rem] text-center">
               {String(item.team).slice(0, 13)}
             </Text>
           </TeamCard>
