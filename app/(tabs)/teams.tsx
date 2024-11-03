@@ -34,7 +34,7 @@ export default function TeamsScreen() {
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
   const getRegion = async (index: number) => {
     const res = await fetch(
-      `http://45.155.124.254:3000/region?code=${Regions[index]}`
+      `https://v2api.rabelcode.net/region?code=${Regions[index]}`
     );
     const data = await res.json();
     setTeams(data.teams);

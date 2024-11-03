@@ -32,7 +32,7 @@ export default function HomeScreen() {
         )
       );
 
-      const res = await fetch("http://45.155.124.254:3000/updates");
+      const res = await fetch("https://v2api.rabelcode.net/updates");
       const data = await res.json();
       setUpdates(data);
       setLastUpdate(Date.now());

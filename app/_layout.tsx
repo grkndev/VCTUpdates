@@ -121,7 +121,7 @@ export default function RootLayout() {
   useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) =>
-        fetch("http://45.155.124.254:3000/exponot", {
+        fetch("https://v2api.rabelcode.net/exponot", {
           method: "POST",
           body: JSON.stringify({ token: token }),
           headers: {
