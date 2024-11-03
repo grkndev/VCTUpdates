@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#121212"
       },
-      "package": "com.gweepcreative.VCTUpdates"
+      "package": "com.gweepcreative.VCTUpdates",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
