@@ -68,13 +68,11 @@ export default function HomeScreen() {
         keyExtractor={(_, i) => i.toString()}
         contentContainerClassName="flex gap-4"
         className=" h-[90%]"
-        renderItem={({ index }) => (
+        renderItem={({ item, index }) => (
           <Card
-            team={"BBL Esports"}
-            date={"2 Nov 2024 11:24"}
-            content={
-              'DOĞUKAN "QutionerX" DURAL roster status was changed from Active to Reserve'
-            }
+            team={item.team || item.region}
+            date={dayjs(item.date).format("D MMM YYYY HH:mm")}
+            content={item.message}
           />
         )}
         refreshControl={
