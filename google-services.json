@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "315541410116",
+    "project_id": "vctupdates",
+    "storage_bucket": "vctupdates.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315541410116:android:7f87346d96f92018e5c711",
+        "android_client_info": {
+          "package_name": "com.gweepcreative.VCTUpdates"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3MIr0whVjVOjBYs7kdil7vFsFvlCfAjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -26,6 +26,7 @@ export default function TabLayout() {
           justifyContent: "center",
         },
       }}
+      initialRouteName="index"
     >
       <Tabs.Screen
         name="index"
